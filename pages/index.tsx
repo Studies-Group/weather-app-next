@@ -1,28 +1,26 @@
-import axios from "axios";
+import { useEffect, useState } from "react";
+
+import { getCurrentWeather } from "../services/weather";
 
 import Card from "../components/Card";
 
 export default function Home() {
-  async function getWeather() {
-    await axios
-      .post("http://localhost:3000/api/weather", {
-        city: "Porto Alegre"
-      })
-      .then((value) => {
-        console.log(value)
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  const [todayWeather, setTodayWeather] = useState({});
 
-  getWeather();
+  useEffect(() => {
+    async function setCurrentWeather() {
+      setTodayWeather(await getCurrentWeather());
+    }
+
+    setCurrentWeather();
+  }, []);
 
   return (
     <>
       <h1>Hello weather app</h1>
-
-      <Card />
+      <hr />
+      <h3>'oi'</h3>
+      <Card weather={todayWeather as any} />
     </>
   );
 }

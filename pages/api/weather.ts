@@ -15,15 +15,13 @@ export const getWeather = async (
   const data = await axios
     .get(`https://${apiURL}weather?q=${city}&appid=${apiKey}&units=metric`, {
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     })
-    .then(({data}) => {
-      console.log("data: ", data);
+    .then(({ data }) => {
       return data;
     })
     .catch((err) => {
-      console.error("err: ", err);
       return { type: "error", message: err.message };
     });
 
