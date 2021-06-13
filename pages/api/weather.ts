@@ -10,28 +10,24 @@ export const getWeather = async (
   request: NextApiRequest,
   response: NextApiResponse
 ) => {
-  console.log(request);
   const { city } = request.body;
 
-  response.send(
-    await axios
-      .get(`http://${apiURL}weather?q=${city}&appid=${apiKey}`)
-      .then((data) => JSON.stringify(data))
-      .catch((err) => {
-        return { type: "error", message: err.message };
-      })
-  );
-  // try {
-  //   return response.send(
-  //     await
-  //   );
-  // } catch (error) {
-  //   console.log(error);
-  //   return response.send({
-  //     type: "error",
-  //     message: error.message
-  //   });
-  // }
+  const data = await axios
+    .get(`https://${apiURL}weather?q=${city}&appid=${apiKey}&units=metric`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(({data}) => {
+      console.log("data: ", data);
+      return data;
+    })
+    .catch((err) => {
+      console.error("err: ", err);
+      return { type: "error", message: err.message };
+    });
+
+  response.json(data);
 };
 
 export default getWeather;
