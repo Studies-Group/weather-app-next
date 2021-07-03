@@ -1,3 +1,5 @@
+import axios, { AxiosResponse } from "axios";
+
 interface WeatherResponse {
   weather: [
     {
@@ -17,7 +19,7 @@ interface WeatherResponse {
 }
 
 function currentWeatherMapper(value: WeatherResponse) {
-  const { main, description } = value.weather[0];
+  const { main, description, icon } = value.weather[0];
 
   const {
     temp_max: tempMax,
@@ -35,41 +37,21 @@ function currentWeatherMapper(value: WeatherResponse) {
     humidity,
     main,
     description,
+    icon
   };
 }
 
 export async function getCurrentWeather(): Promise<any> {
-  const mock: WeatherResponse = {
-    weather: [
-      {
-        id: 2000,
-        main: "clear",
-        description: "clearsky",
-        icon: "abc02",
-      },
-    ],
-    main: {
-      feels_like: -40,
-      humidity: 59,
-      temp: 20,
-      temp_max: 21,
-      temp_min: 19,
-    },
-  };
-
-  const { main, weather } = mock;
-  console.log(currentWeatherMapper({ main, weather }));
-  return Promise.resolve();
-  // return await axios
-  //   .post(`https://y4dqn.sse.codesandbox.io/api/weather`, {
-  //     city: "Porto Alegre"
-  //   })
-  //   .then((value: AxiosResponse<WeatherResponse>) => {
-  //     const { main, weather } = value.data;
-  //     currentWeatherMapper({ main, weather });
-  //     return value;
-  //   })
-  //   .catch((err) => {
-  //     return err;
-  //   });
+  return await axios
+    .post(`http://localhost:3000/api/weather`, {
+      city: "Porto Alegre"
+    })
+    .then((value: AxiosResponse<WeatherResponse>) => {
+      const { main, weather } = value.data;
+      const res = currentWeatherMapper({ main, weather });
+      return res;
+    })
+    .catch((err) => {
+      return err;
+    });
 }

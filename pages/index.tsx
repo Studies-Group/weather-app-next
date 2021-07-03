@@ -1,26 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-import { getCurrentWeather } from "../services/weather-service";
+import { getCurrentWeather } from '../services/weather-service'
 
-import Card from "../components/Card";
+import { Card } from '../components/Card'
+import { Header } from '../components/Header'
+import { IWeather } from '../models/weather.model'
+import { GlobalStyle } from '../styles'
 
 export default function Home() {
-  const [todayWeather, setTodayWeather] = useState({});
+  const [todayWeather, setTodayWeather] = useState<IWeather>({} as IWeather)
 
   useEffect(() => {
     async function setCurrentWeather() {
-      setTodayWeather(await getCurrentWeather());
+      setTodayWeather(await getCurrentWeather())
     }
 
-    setCurrentWeather();
-  }, []);
+    setCurrentWeather()
+  }, [])
 
   return (
     <>
-      <h1>Hello weather app</h1>
-      <hr />
-      <h3>'oi'</h3>
-      <Card weather={todayWeather as any} />
+      <GlobalStyle />
+      <Header/>
+      <Card weather={todayWeather} />
     </>
-  );
+  )
 }
