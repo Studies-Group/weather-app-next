@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getCurrentWeather } from "../services/weather";
+import { getCurrentWeather } from "../services/weather-service";
 
 import Card from "../components/Card";
 
